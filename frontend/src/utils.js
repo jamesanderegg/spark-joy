@@ -1,3 +1,5 @@
+import { node } from "prop-types";
+import css from "css"
 
 // Borrowed from https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
 export const copyToClipboard = str => {
@@ -20,3 +22,35 @@ export const copyToClipboard = str => {
         document.getSelection().addRange(selected); // Restore the original selection
     }
 };
+
+function getClassNames(node) {
+    return [
+      node.className,
+      ...Array.from(node.children).map(getClassNames),
+    ].flat()
+  }
+  
+  export const getCSS = node => {
+    const classNames = getClassNames(node)
+      .map(name => name.split(" "))
+      .flat()
+      .map(name => `.${name}`)
+  
+    // Gets CSS for the entire page
+    const cssStyles = Array.from(document.head.getElementsByTagName("style"))
+      .map(style => style.innerHTML)
+      .join("")
+  
+    const parsedCSS = css.parse(cssStyles)
+    parsedCSS.stylesheet.rules = parsedCSS.stylesheet.rules
+      .filter(rule => rule.type === "rule")
+      .filter(rule =>
+        rule.selectors.some(selector =>
+          classNames.some(name => name === selector)
+        )
+      )
+  
+    const styles = css.stringify(parsedCSS)
+  
+    return styles
+  }

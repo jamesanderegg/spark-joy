@@ -6,6 +6,8 @@
   "author": "James Anderegg <iceandjames@gmail.com>",
   "dependencies": {
     "babel-plugin-styled-components": "^1.10.0",
+    "butter-toast": "^3.3.3",
+    "css": "^2.2.4",
     "gatsby": "^2.7.5",
     "gatsby-image": "^2.1.2",
     "gatsby-plugin-manifest": "^2.1.1",
